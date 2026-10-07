@@ -1,0 +1,13 @@
+/* Shared primary navigation across handbook and comparison screens. */
+.site-header{position:sticky;top:0;z-index:20;background:#0c3048;color:white;border-bottom:1px solid #234a60;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;font-family:'Malgun Gothic',sans-serif;line-height:1.5}
+.site-header .site-brand{display:flex;align-items:center;gap:12px;color:white;text-decoration:none;font-weight:700;font-size:19px}
+.site-header .site-brand small{display:block;color:#b9ceda;font-size:13px;font-weight:400;margin-top:3px}
+.site-header .site-logo{display:grid;place-items:center;width:44px;height:44px;background:#158b96;border-radius:8px;color:white;font-size:24px}
+.site-header .site-tabs{display:flex;gap:8px;flex-wrap:nowrap;overflow:visible;padding:0;margin:0;width:auto}
+.site-header .site-tabs a,.site-header .site-tabs button{font:700 14px 'Malgun Gothic',sans-serif;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 18px;border:1px solid #dce5e8;border-radius:8px;background:white;color:#0e5964;text-decoration:none;width:auto;white-space:nowrap;cursor:pointer;position:relative}
+.site-header .site-tabs [aria-current=page]{box-shadow:inset 0 -3px #158b96}
+.site-header .site-tabs a:hover,.site-header .site-tabs button:hover{background:#edf6f7}
+.site-header a:focus-visible,.site-header button:focus-visible{outline:3px solid #f1ac36;outline-offset:3px}
+@media(max-width:600px){.site-header{padding:12px 16px;flex-wrap:wrap;gap:12px}.site-header .site-brand{font-size:17px}.site-header .site-brand small{font-size:12px}.site-header .site-logo{width:38px;height:38px}.site-header .site-tabs{width:100%;gap:8px}.site-header .site-tabs a,.site-header .site-tabs button{flex:1;padding:10px 12px;font-size:14px}}
+
+.site-header .site-company-logo{display:block;width:48px;height:44px;object-fit:contain;flex-shrink:0;background:transparent}@media(max-width:600px){.site-header .site-company-logo{width:42px;height:38px}}

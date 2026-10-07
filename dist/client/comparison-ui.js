@@ -1,0 +1,13 @@
+'use strict';
+let currentComparisonStep=1,furthestComparisonStep=1;
+function showComparisonStep(step,scroll=true){currentComparisonStep=step;document.querySelectorAll('[data-step-panel]').forEach(p=>p.hidden=Number(p.dataset.stepPanel)!==step);document.querySelectorAll('#comparison-progress [data-step]').forEach(b=>{const active=Number(b.dataset.step)===step;b.setAttribute('aria-current',active?'step':'false');b.disabled=Number(b.dataset.step)>furthestComparisonStep;});$('results').hidden=true;if(scroll)$('comparison-progress').scrollIntoView({behavior:'smooth',block:'start'});}
+function advanceComparisonStep(step){if(step===1){if(!selectedApartment||!selectedApartment.heatingType.includes('지역')){setText('lookup-status','지역난방 단지를 검색·선택한 뒤 다음 단계로 진행해주세요.');$('lookup-name').focus();return;}setText('lookup-status','선택 완료: '+selectedApartment.name);}if(step===2){const draft=readInput();if(!draft){setText('step-input-status','표시된 입력 오류를 수정해주세요.');$('analysis-form').querySelector('[aria-invalid="true"]')?.focus();return;}const now=new Date(Date.now()+9*3600000);if(draft.analysisYear*12+draft.analysisMonth>=now.getUTCFullYear()*12+now.getUTCMonth()+1){setText('step-input-status','자료가 공개된 종료 월을 선택해주세요.');$('analysisMonth').focus();return;}input=draft;setText('step-input-status','');}furthestComparisonStep=Math.max(furthestComparisonStep,step+1);showComparisonStep(step+1);}
+const inputStatus=document.createElement('p');inputStatus.id='step-input-status';inputStatus.setAttribute('role','status');$('comparison-step-2').append(inputStatus);
+document.querySelectorAll('[data-step-next]').forEach(b=>b.addEventListener('click',()=>advanceComparisonStep(Number(b.dataset.stepNext))));
+document.querySelectorAll('[data-step-back]').forEach(b=>b.addEventListener('click',()=>showComparisonStep(Number(b.dataset.stepBack))));
+document.querySelectorAll('#comparison-progress [data-step]').forEach(b=>b.addEventListener('click',()=>{const step=Number(b.dataset.step);if(step<=furthestComparisonStep)showComparisonStep(step);}));
+$('edit-comparison').addEventListener('click',()=>showComparisonStep(2));
+new MutationObserver(()=>{if(!$('results').hidden){document.querySelectorAll('[data-step-panel]').forEach(p=>p.hidden=true);document.querySelectorAll('#comparison-progress [data-step]').forEach(b=>b.setAttribute('aria-current','false'));}}).observe($('results'),{attributes:true,attributeFilter:['hidden']});
+$('analysis-form').addEventListener('submit',event=>{if(currentComparisonStep!==3){event.preventDefault();event.stopImmediatePropagation();advanceComparisonStep(2);}},true);
+$('analysis-form').addEventListener('submit',()=>{if(!readInput())showComparisonStep(2);});
+showComparisonStep(1,false);
